@@ -1,1 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Portfolio | Modern & Clean</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --card-bg: #ffffff;
+            --transition: all 0.3s ease;
+        }
 
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --card-bg: #1e293b;
+        }
+
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* --- COMPONENTS --- */
+        .btn-theme {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid-projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 5rem 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 0;
+            opacity: 0.7;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-theme" id="themeToggle">Trocar Tema</button>
+
+    <header class="reveal">
+        <div class="container">
+            <p style="font-weight: 600; color: var(--primary-color); letter-spacing: 2px;">OLÁ, EU SOU UM DESENVOLVEDOR</p>
+            <h1 class="hero-title">Construindo o futuro através do código.</h1>
+            <p style="max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
+                Especialista em criar soluções digitais escaláveis, limpas e focadas na experiência do usuário.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="grid-projects">
+            <div class="card reveal">
+                <span class="tag">Interface</span>
+                <h3>Dashboard Analytics</h3>
+                <p>Uma interface completa para visualização de dados em tempo real com gráficos interativos.</p>
+            </div>
+
+            <div class="card reveal" style="animation-delay: 0.2s;">
+                <span class="tag">Backend</span>
+                <h3>API E-commerce</h3>
+                <p>Infraestrutura robusta em Node.js com processamento de pagamentos e gestão de estoque.</p>
+            </div>
+
+            <div class="card reveal" style="animation-delay: 0.4s;">
+                <span class="tag">Mobile</span>
+                <h3>Health Tracker</h3>
+                <p>Aplicativo focado em bem-estar que monitora hábitos saudáveis e batimentos cardíacos.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 • Desenvolvido com carinho para o GitHub.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- DARK MODE LOGIC ---
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            themeToggle.textContent = isDark ? 'Modo Escuro' : 'Modo Claro';
+            
+            // Salvar preferência no navegador
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        });
+
+        // Verificar preferência salva ao carregar
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            themeToggle.textContent = 'Modo Claro';
+        }
+
+        // --- REVEAL ANIMATION ON SCROLL ---
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
