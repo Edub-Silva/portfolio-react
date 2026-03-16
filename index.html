@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaCore AI | Dashboard Professional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body { background: radial-gradient(circle at top left, #0d1117, #161b22); color: white; }
+    </style>
+</head>
+<body class="min-h-screen flex">
+
+    <nav class="w-64 glass m-4 rounded-2xl p-6 hidden md:flex flex-col gap-8">
+        <div class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+            NovaCore.io
+        </div>
+        <ul class="flex flex-col gap-4">
+            <li class="p-3 bg-blue-600/20 rounded-lg text-blue-400 cursor-pointer"><i class="fas fa-chart-pie mr-3"></i> Dashboard</li>
+            <li class="p-3 hover:bg-white/5 rounded-lg transition cursor-pointer"><i class="fas fa-brain mr-3"></i> Análise IA</li>
+            <li class="p-3 hover:bg-white/5 rounded-lg transition cursor-pointer"><i class="fas fa-wallet mr-3"></i> Faturamento</li>
+            <li class="p-3 hover:bg-white/5 rounded-lg transition cursor-pointer"><i class="fas fa-cog mr-3"></i> Configurações</li>
+        </ul>
+    </nav>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-bold">Bem-vindo, Visionário</h1>
+                <p class="text-gray-400">Aqui está o resumo da sua operação hoje.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="bg-blue-600 hover:bg-blue-500 px-6 py-2 rounded-full font-medium transition">Novo Projeto</button>
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 border-2 border-white/20"></div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="glass p-6 rounded-2xl">
+                <p class="text-gray-400 text-sm">Receita Mensal (MRR)</p>
+                <h3 class="text-2xl font-bold mt-2">R$ 12.450,00</h3>
+                <span class="text-emerald-400 text-sm"><i class="fas fa-arrow-up"></i> +12% vs mês anterior</span>
+            </div>
+            <div class="glass p-6 rounded-2xl">
+                <p class="text-gray-400 text-sm">Usuários Ativos</p>
+                <h3 class="text-2xl font-bold mt-2">1,284</h3>
+                <span class="text-blue-400 text-sm"><i class="fas fa-users"></i> Crescimento orgânico</span>
+            </div>
+            <div class="glass p-6 rounded-2xl">
+                <p class="text-gray-400 text-sm">Status do Sistema</p>
+                <h3 class="text-2xl font-bold mt-2 text-emerald-400">Operacional</h3>
+                <span class="text-gray-500 text-sm">Latência: 24ms</span>
+            </div>
+        </div>
+
+        <div class="glass p-8 rounded-2xl">
+            <h2 class="text-xl font-bold mb-4">Pergunte à IA de Negócios</h2>
+            <div class="flex gap-4">
+                <input type="text" id="userInput" placeholder="Ex: 'Qual a previsão de lucro para o próximo trimestre?'" 
+                       class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="askAI()" class="bg-white text-black px-8 py-3 rounded-xl font-bold hover:bg-gray-200 transition">Processar</button>
+            </div>
+            <div id="responseArea" class="mt-6 p-4 rounded-lg bg-white/5 hidden animate-pulse">
+                </div>
+        </div>
+    </main>
+
+    <script>
+        async function askAI() {
+            const input = document.getElementById('userInput').value;
+            const responseArea = document.getElementById('responseArea');
+            
+            if(!input) return;
+
+            responseArea.classList.remove('hidden');
+            responseArea.innerHTML = "Analisando dados em tempo real...";
+
+            try {
+                const res = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ query: input })
+                });
+                const data = await res.json();
+                responseArea.classList.remove('animate-pulse');
+                responseArea.innerHTML = `<i class="fas fa-robot text-blue-400 mr-2"></i> <strong>Insight:</strong> ${data.message}`;
+            } catch (err) {
+                responseArea.innerHTML = "Erro ao conectar com o servidor.";
+            }
+        }
+    </script>
+</body>
+</html>
